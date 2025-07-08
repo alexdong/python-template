@@ -1,4 +1,4 @@
-.PHONY: dev test test-coverage type-coverage tail-log
+.PHONY: dev test test-coverage type-coverage
 
 dev:
 	uv run ruff check . --fix --unsafe-fixes
@@ -22,6 +22,3 @@ type-coverage:
 	@echo "📊 Checking for Any usage (should be minimal)..."
 	@uv run ruff check . --select ANN401 --quiet && echo "✅ No problematic Any usage found" || echo "⚠️  Some Any usage found (may be acceptable in tests)"
 	@echo "📈 Type coverage assessment complete!"
-
-tail-log:
-	tail -f /var/log/rumenaut/app.log
