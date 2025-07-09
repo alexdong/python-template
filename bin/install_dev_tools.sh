@@ -165,6 +165,7 @@ install_package_manager_tools() {
             "sox"
             "audacity"
             "yt-dlp"
+            "pandoc"
         )
         
         for tool in "${tools[@]}"; do
@@ -193,6 +194,7 @@ install_package_manager_tools() {
             "sox"
             "libsox-fmt-all"    # SoX format support
             "audacity"
+            "pandoc"
         )
         
         for tool in "${apt_tools[@]}"; do
@@ -341,7 +343,7 @@ verify_installations() {
     local tools=(
         "curl" "jq" "rg" "hyperfine" "fd" "broot" "htmlq" 
         "mise" "llm" "monolith" "rnr" "tspin" "convert" 
-        "ffmpeg" "sox" "yt-dlp"
+        "ffmpeg" "sox" "yt-dlp" "pandoc"
     )
     
     local missing=()
