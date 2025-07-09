@@ -26,5 +26,18 @@ type-coverage:
 update-llms-txt:
 	@echo "📚 Updating llms/*.txt documentation files..."
 	@mkdir -p llms
-	@claude -p "can you create a ./llms directory and produce llms/{tools}.txt files for each tool mentioned in Python.md directory. For CLI tools, produce it through saving the \`--help\` and potential \`tldr\` example output; For python packages, search the website for \`llms.txt\` or \`llms-full.txt\`. For example, you can find https://docs.pydantic.dev/latest/llms-full.txt for pydantic. Lastly, always document how the output is retrieved at the bottom of each document so future operations can be automated. can you also add a \`claude -p\` statement in Makefile that's \`make update-llms-txt\` which will automatically update all the llms/.txt files. (You can use this prompt as a template.)"
+	@claude -p "Please update the llms/ directory with documentation for tools mentioned in Python.md. For each tool: \
+	\
+	1. CLI TOOLS: Run '{tool} --help' to get help output. Save to llms/{tool}.txt. \
+	2. PYTHON PACKAGES: Check for official llms.txt files at common locations: \
+	   - https://docs.{package}.dev/latest/llms.txt or llms-full.txt \
+	   - https://{package}.readthedocs.io/llms.txt \
+	   - For pydantic-ai: https://ai.pydantic.dev/llms-full.txt \
+	   - For fasthtml: https://fastht.ml/docs/llms-ctx-full.txt \
+	3. For each file, add a footer documenting: \
+	   - Source URL or command used \
+	   - Retrieval date \
+	   - Method (curl, help command, etc.) \
+	\
+	IMPORTANT: Only update existing files or create new ones for tools in Python.md. Use curl to download llms.txt files when available. For CLI tools not installed, create placeholder noting unavailability."
 	@echo "✅ llms/*.txt files updated!"
