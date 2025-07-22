@@ -139,9 +139,8 @@ Visual structure helps rapid comprehension. Consistent formatting reduces the me
 - Use one empty line between key concept blocks within functions
 - Use two empty lines between functions and classes
 - Use plain SQL over ORMs and output SQL in logs
-- Prefer simple data constructs like `@dataclass`, named tuples, dicts, lists
+- Prefer simple data constructs like `@dataclass` and `namedtuple`s. Use sets, dicts, lists if the type of the key or value is the same.
 - Prefer functions over classes
-- Refactor high McCabe complexity code and extract common code to `src/utils/`
 
 
 ### Comprehensive Type Coverage
