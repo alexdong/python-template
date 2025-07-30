@@ -18,7 +18,7 @@
 - **Cross platform**: `platformdirs`
 - **Hosting**: `cloudflare tunnel`
 
-### System Requirements
+### System Environment
 
 - **OS**: macOS 15.5+ or latest Ubuntu with dev tools
 - **Shell**: zsh with oh-my-zsh
@@ -101,7 +101,7 @@ Every Python file must be executable:
 - [MB4] Call `main()` function from block to keep global namespace clean
 - [MB5] Use `click` for command-line interfaces
 
-### Function Design
+## Function Design
 
 Functions are the primary building blocks. Design them for clarity and composition.
 
@@ -147,7 +147,7 @@ Logs are your debugging time machine:
 - [LG7] Use `bind()` and `contextualize()` for context
 - [LG8] Debug selectively: `--debug-modules module1,module2`
 
-### Modern Python Features
+## Modern Python Features
 
 ### Pythonic Idioms
 
@@ -190,7 +190,7 @@ Logs are your debugging time machine:
 - [CT4] Lazy evaluation: generator functions with `yield`
 - [CT5] Path operations: `pathlib.Path`
 
-### Database Strategy
+## Database Strategy
 
 - [DB1] SQLite for development, PostgreSQL for production
 - [DB2] Separate databases per environment: dev, staging, main
@@ -199,7 +199,7 @@ Logs are your debugging time machine:
 - [DB5] Avoid ORMs
 - [DB6] Naming: `models/{entity}.py: class Entity` and `db/{entity}.py: class EntityDB`
 
-### Testing
+## Testing
 
 ### Structure and Naming
 
