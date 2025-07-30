@@ -109,5 +109,3 @@ exclude_lines = [
     "raise NotImplementedError",
 ]
 
-[tool.ty]
-exclude = ["**/*_test.py"]
