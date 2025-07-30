@@ -10,7 +10,7 @@
 - **Code Quality**: `ruff` (formatting and linting), `ty` (type checking)
 - **Logging**: `loguru`
 - **Testing**: `pytest`
-- **CLI Tools**: `click`, `prompt-toolkit`, `rich`
+- **CLI Tools**: `click`, `typer`, `prompt-toolkit`, `rich` and `shellingham`
 - **Web**: `fasthtml`
 - **Templates**: `jinja2`
 - **AI/LLM**: use anthropic by default using `pydantic-ai`
@@ -53,11 +53,10 @@
 
 ### Code Organization
 
-- [CO1] Place main function at file top
+- [CO1] Place the most important functions at file top
 - [CO2] Write compact code (fewer lines, less cognitive load)
-- [CO3] Avoid `async` when unnecessary
+- [CO3] Choose simplicity over cleverness
 - [CO4] Use one-liners for simple operations
-- [CO5] Choose simplicity over cleverness
 
 ### Formatting and Spacing
 
@@ -109,9 +108,9 @@ Functions are the primary building blocks. Design them for clarity and compositi
 ### Principles
 
 - [FP1] Prefer functions over classes
-- [FP2] Keep functions small (under 20 lines, McCabe complexity under 6)
+- [FP2] Keep functions simple (McCabe complexity under 6)
 - [FP3] Do one thing well
-- [FP4] Return structured data (`@dataclass` or `namedtuple`) instead of tuples
+- [FP4] Return structured data (`@dataclass`, `namedtuple`, `enum`) instead of tuples, mixed typed lists or dicts
 - [FP5] Separate state-changing functions from data-returning functions
 - [FP6] Write docstrings only when intent is unclear
 
@@ -149,8 +148,6 @@ Logs are your debugging time machine:
 - [LG8] Debug selectively: `--debug-modules module1,module2`
 
 ### Modern Python Features
-
-Use current Python features for concise, expressive code.
 
 ### Pythonic Idioms
 
