@@ -6,15 +6,6 @@
 
 This core requirement sets the tone for all coding practices. Code must be understandable after not touching it for months or years. This requires simple, shorter code with clear data flow and state transitions that are easy to trace.
 
-### Planning and Documentation
-
-Documentation that lives close to code is more likely to stay current. TODO lists provide clear progress tracking.
-
-- Add "Implementation Plan (TODOs)" section to `logs/{FeatureName}.md`
-- Use nested itemized lists with `[ ]` prefixes for TODO items
-- Tick off completed items and add implementation notes
-- Log improvements in `logs/{FeatureName}-Improvements.log`
-
 ### Code Quality Checks (Sequential)
 
 Automated checks catch issues early and maintain consistency. Running them in sequence prevents later tools from being confused by earlier failures.
@@ -28,16 +19,32 @@ Automated checks catch issues early and maintain consistency. Running them in se
 
 After you generate code, don't stop at the first pass. Instead, iteratively improve the generated code until you can't make it any better. Make it more readable, succinct. Focus on one particular enhancement each iteration. You must keep going until you can not find further ways to improve the code.
 
+### Makefile Usage
+
+Makefiles provide discoverable, consistent commands across projects. They reduce cognitive load by standardizing common tasks.
+
+- Create Makefile entries for linting, testing, deployment
+- Keep comments succinct and relevant
+- Refactor repeated commands into Makefile targets
+
+### Git Workflow
+
+Frequent commits with clear messages provide better project history and easier debugging.
+
+- Commit and push after completing each TODO item
+- Include meaningful commit messages describing changes
 
 ## Development Environment
 
 ### Core Tools
-- **Python**: 3.12+
+- **Python**: 3.13+
 - **Package Management**: `uv` (not pip or requirements.txt)
-- **Code Quality**: 
-  - `ruff` (formatting and linting), 
-  - `ty` (type checking), 
+- **Typing**:
   - `pydantic` (more sophisticated types and data validation)
+- **Code Quality**:
+  - `ruff` (formatting and linting)
+  - `ty` (type checking)
+- **Logging**: `loguru`
 - **Testing**: `pytest`
 - **CLI Tools**: `click`, `prompt-toolkit`, `rich`
 - **Web**: `fasthtml`
@@ -46,7 +53,7 @@ After you generate code, don't stop at the first pass. Instead, iteratively impr
   - `pydantic-ai` (Agent and structured output and validation), 
   - OpenAI Whisper (audio)
 - **Data & Analysis**: `numpy`, `plotly`, `streamlit`
-- **Hosting**: `ngrok`
+- **Hosting**: `cloudflare tunnel`
 
 ### System Environment
 - **OS**: macOS 15.5+ or latest Ubuntu (both with complete dev toolchain installed)
@@ -58,27 +65,13 @@ These tools provide superior performance and ergonomics for common development t
 - `curl` - HTTP client with better output formatting than system curl
 - `jq` - JSON processor for parsing and manipulating JSON data
 - `hyperfine` - Command-line benchmarking tool for performance testing
-- `rg` - Fast text search tool (alternative to grep)
-- `fd` - Fast file finder (alternative to find)
-- `broot` - Interactive directory tree navigation
-- `htmlq` - HTML parser and selector tool for web scraping
-- `mise` - Development environment and version manager
-- `llm` - Command-line interface for various language models
-- `monolith` - Tool for saving complete web pages as single HTML files
-- `rnr` - Bulk file renaming utility with regex support
-- `tspin` - Log file viewer with syntax highlighting and filtering
-- `imagemagick/convert` - Image manipulation and conversion
-- `ffmpeg` - Video and audio processing
-- `sox` - Audio file manipulation
-- `audacity` - Audio editing (when GUI is available)
-- `yt-dlp` - YouTube and video platform downloader
 
 ## Project Structure
 
 ```
 ./
 ├── docs/                   # Documentation and plans
-├── src/                    # Application code
+├── {package_name}/         # Application code
 │   ├── component/          # Component specific code and unit tests.
 │   ├── utils/              # Component specific code and unit tests.
 ├── tests/
@@ -90,7 +83,7 @@ These tools provide superior performance and ergonomics for common development t
 └── pyproject.toml          # Project setting
 ```
 
-## Coding Conventions
+## Coding Styles
 
 ### Readability First
 
@@ -139,8 +132,9 @@ Visual structure helps rapid comprehension. Consistent formatting reduces the me
 - Use one empty line between key concept blocks within functions
 - Use two empty lines between functions and classes
 - Use plain SQL over ORMs and output SQL in logs
-- Prefer simple data constructs like `@dataclass` and `namedtuple`s. Use sets, dicts, lists if the type of the key or value is the same.
+- Prefer simple data constructs like `@dataclass`, named tuples, dicts, lists
 - Prefer functions over classes
+- Refactor high McCabe complexity code and extract common code to `src/utils/`
 
 
 ### Comprehensive Type Coverage
@@ -180,8 +174,6 @@ Every Python file should be executable for testing and demonstration. This enabl
 - Enable direct CLI invocation of functions within files
 
 
-## Testing Strategy
-
 ### Test Organization
 
 Tests are the safety net for refactoring and the specification for expected behavior. They should be as readable as the production code.
@@ -202,7 +194,6 @@ Writing tests first clarifies requirements and ensures testable design. It preve
 - Use detailed assert statements to capture intent and contracts
 - Whenever you make a simple change, run the minimum test sets leveraging `pytest. mark`.
 
-
 ### Regression Testing
 
 Full regression testing ensures changes don't break existing functionality. Coverage metrics indicate test quality.
@@ -214,18 +205,3 @@ Full regression testing ensures changes don't break existing functionality. Cove
 
 
 ## Build and Deployment
-
-### Makefile Usage
-
-Makefiles provide discoverable, consistent commands across projects. They reduce cognitive load by standardizing common tasks.
-
-- Create Makefile entries for linting, testing, deployment
-- Keep comments succinct and relevant
-- Refactor repeated commands into Makefile targets
-
-### Git Workflow
-
-Frequent commits with clear messages provide better project history and easier debugging.
-
-- Commit and push after completing each TODO item
-- Include meaningful commit messages describing changes

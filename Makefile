@@ -6,10 +6,10 @@ dev:
 	uv run ty check .
 
 test:
-	pytest --lf
+	uv run pytest --lf
 
 test-coverage:
-	pytest --cov=. --cov-report=html --cov-report=term --duration=5 
+	uv run pytest --cov=. --cov-report=html --cov-report=term --duration=5 
 
 type-coverage:
 	@echo "🔍 Checking type annotation coverage..."

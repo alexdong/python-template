@@ -108,3 +108,6 @@ exclude_lines = [
     "raise AssertionError",
     "raise NotImplementedError",
 ]
+
+[tool.ty]
+exclude = ["**/*_test.py"]
