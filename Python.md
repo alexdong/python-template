@@ -15,6 +15,12 @@ Automated checks catch issues early and maintain consistency. Running them in se
 - `uv run ty {files}`
 - `uv run pytest -vv {files}_test.py` (minimum tests for changes)
 
+### Test Facilities 
+Full regression testing ensures changes don't break existing functionality. Coverage metrics indicate test quality.
+
+- Single-module: `PYTHONPATH=$(pwd) uv run pytest -vv --cov=module_name --durations=4`
+- Multi-module: `PYTHONPATH=$(pwd) uv run pytest -vv --cov=src --durations=4`
+
 ### Iterative Development Process
 
 After you generate code, don't stop at the first pass. Instead, iteratively improve the generated code until you can't make it any better. Make it more readable, succinct. Focus on one particular enhancement each iteration. You must keep going until you can not find further ways to improve the code.
@@ -53,6 +59,7 @@ Frequent commits with clear messages provide better project history and easier d
   - `pydantic-ai` (Agent and structured output and validation), 
   - OpenAI Whisper (audio)
 - **Data & Analysis**: `numpy`, `plotly`, `streamlit`
+- **Cross platform**: `platformdirs`
 - **Hosting**: `cloudflare tunnel`
 
 ### System Environment
@@ -85,123 +92,174 @@ These tools provide superior performance and ergonomics for common development t
 
 ## Coding Styles
 
-### Readability First
+### Readability and Naming
 
 Code is read far more often than it's written. After months away from code, we need to understand it quickly without archaeological investigation.
 
+#### Code Organization
 - Put the top-level function at the top of each file (read top to bottom)
 - Produce compact code - fewer lines mean less cognitive load
-- Choose names wisely to minimize effort required to understand intent
-- Use long, descriptive names for files, functions, and variables
 - Use non-`async` Python calls whenever possible
 - Use one-liners (lambda, list comprehensions) to reduce line count
 - Prefer simple code over clever hacks
-- Use latest Python facilities: dictionary operators (`|`, `|=`), walrus operator (`:=`), structural pattern matching
 
-### Fail Early and Fast
-
-Debugging issues discovered late in execution is exponentially more expensive than catching them early. Clear failure points reduce investigation time.
-
-- Prefer `assert` over `Optional` and try/except for clearer intent
-- Use `try` and `except` sparingly - let code fail early
-- Use generous `assert` statements to check validity and fail fast
-- Use `assert` at the beginning and end of each function to enforce design contracts
-- Use descriptive assert messages to document program flow and states
-
-### Minimize Mental Constructs
-
-Every additional abstraction layer increases cognitive load. Functions are easier to understand and test than classes for most use cases.
-
-- Prefer functions over classes
-- Write docstrings only when function intention is unclear from name/implementation
-
-### Traceability and Debugging
-
-When code fails (and it will), we need to quickly understand what happened and where. Logs are our time machine for understanding past execution.
-
-- Use logging extensively to document key actions and state transitions
-- Set log levels carefully 
-- When debugging, use `--debug-modules module1,module2` for selective debug logging
-- Include "trace_id" and "span_id" in log messages for multi-component requests
-- Use `@functools.wraps` decorators to separate tracing from functional code
-
-### Code Organization
-
-Visual structure helps rapid comprehension. Consistent formatting reduces the mental effort needed to parse code structure.
-
+#### Formatting and Spacing
 - Use one empty line between key concept blocks within functions
 - Use two empty lines between functions and classes
-- Use plain SQL over ORMs and output SQL in logs
-- Prefer simple data constructs like `@dataclass`, named tuples, dicts, lists
-- Prefer functions over classes
-- Refactor high McCabe complexity code and extract common code to `src/utils/`
+- Group related data and methods together in the same module
+- Prefer composition over inheritance for code reuse
 
+#### Naming Conventions
+- Use descriptive variable names that explain the business logic
+- Choose intention-revealing names that minimize effort to understand purpose
+- Use searchable names: avoid single-letter variables outside small scopes (loops, comprehensions)
+- Class names are nouns; function/method names are verbs
+- Use descriptive constants instead of magic numbers: `RETRY_LIMIT = 3` not `3`
+- Variable names should be pronounceable and specific to domain
+- Hide internal data through proper encapsulation: private fields with `_` prefix
 
-### Comprehensive Type Coverage
+#### Strategic Commenting
 
-Types serve as executable documentation and catch errors at development time rather than runtime. They make refactoring safer and IDE assistance more powerful.
+- Comments explain intent and reasoning, not what code literally does
+- Use `logger.debug`, not comment, to document what the code does
+- Document business logic and domain-specific assumptions
+- Use assert messages as inline documentation of contracts
+- Comment complex algorithms that aren't obvious from implementation
+- Explain "why" decisions were made, not "how" code works
+- Skip comments for self-explanatory code with clear naming
 
-- Ensure 100% type coverage for easier function purpose tracking through `make type-coverage`
-- Prefer tight type annotations. Use specific types over generic ones where possible
+#### Extract and Simplify
+- Replace complex expressions with explanatory variables
+- Move closely related statements into dedicated functions
+- When classes become too large, extract focused classes with single responsibilities
+- Group related data and behavior together in the same module
 
-### Database Strategy
-
-SQLite provides ACID guarantees without infrastructure complexity. Raw SQL is easier to debug than ORM-generated queries.
-
-- Use SQLite for data persistence
-- Use separate SQLite files for different purposes
-- Use in-memory SQLite (`sqlite:///:memory:`) for testing
-- Use `conftest.py` for test database setup
-- Avoid ORMs - use raw SQL for debugging clarity
-
-
-### When to Comment
-*Good code should read like well-written prose. Comments should explain why, not what.*
-
-- Produce comments only when absolutely necessary
-- Let code be self-documenting through clear naming
-- Use assert messages as inline documentation
-- Document complex algorithms or business logic that isn't obvious
-
-
-### __main__ Block Requirements
+#### __main__ Block Requirements
 
 Every Python file should be executable for testing and demonstration. This enables quick verification of functionality.
 
 - Include `if __name__ == "__main__"` block in every script
-- Make `__main__` function available for every script
 - Use `__main__` function to demonstrate usage and test code
 - Enable direct CLI invocation of functions within files
 
+### Function Design
 
-### Test Organization
+Functions are the primary building blocks for readable, testable code. 
+Clear function design reduces cognitive load and enables better composition.
 
-Tests are the safety net for refactoring and the specification for expected behavior. They should be as readable as the production code.
+#### Principles
 
-- Name test files `{feature}_test.py` in the same folder as `{feature}.py`
+- Prefer functions over classes for most use cases
+- Keep functions small (typically under 20 lines with McCabe complexity under 6)
+- Functions should do one thing and do it well
+- Return structured `@dataclass` or `namedtuple` instead of tuples for readability
+- Follow Command-Query Separation: separate functions that change state from those that return data
+- Write docstrings only when function intention is unclear from name/implementation
+
+
+#### Fail Early and Fast
+
+Debugging issues discovered late in execution is exponentially more expensive than catching them early. 
+Clear failure points reduce investigation time.
+
+- Prefer `assert` over `Optional` or try/except for clearer intent
+- Avoid `try` and `except`. Use `assert` instead
+- Use generous `assert` statements to check data integrity, program flow so we can fail fast
+- Make sure use descriptive assert messages to document states
+
+#### Control Flow Patterns
+
+Clear control flow reduces cognitive load and makes code easier to follow. 
+Minimize nesting and make decision paths explicit.
+
+- Use guard clauses to handle edge cases early and reduce nesting
+- When appropriate, use `assert` at the beginning and end of each function to enforce design contracts
+- Return early from functions to avoid deep indentation
+- Handle invalid states at the beginning of functions
+- Extract complex boolean expressions into well-named variables
+- Break down compound conditionals for clarity
+
+#### Traceability, Logging and Debuggability
+
+When code fails (and it will), we need to quickly understand what happened and where. 
+Logs are our time machine for understanding past execution.
+
+- Use `from loguru import logger` instead of the default logging framework. 
+- Use `logger.debug` to document the code and execution flow. 
+- Prefer logging over code comments.
+- By default, output the log to path using `platformdirs`: `PlatformDirs().site_log_dir` 
+- Always turn on `logger.add(..., backtrace=True, diagnose=True)`
+- Use log message format: `format="{time:MMMM D, YYYY > HH:mm:ss!UTC} | {level} | {message} | {extra}")`
+- Use loguru's `bind()` and `contextualize()` to include extra information at log point.
+- When debugging, use `--debug-modules module1,module2` for selective debug logging
+
+
+### Use Modern Python Features
+
+Leverage modern Python features for concise, expressive code that takes advantage of the latest language improvements.
+
+#### Pythonic Idioms and Expressions
+- Use dictionary comprehensions with conditions: `{k: v for k, v in items.items() if v > threshold}`
+- Prefer `enumerate()` over manual indexing: `for i, item in enumerate(items)` not `for i in range(len(items))`
+- Use `zip()` for parallel iteration: `for name, score in zip(names, scores)`
+- Leverage walrus operator for assignment expressions: `if (n := len(data)) > 10:`
+- Use `dict.get()` with defaults: `counts.get(key, 0)` instead of `if key in counts`
+- Prefer `dict |= other` over `dict.update(other)` for merging
+
+#### Function Design Patterns
+- Use keyword-only arguments for clarity: `def process(data, *, debug=False, timeout=30):`
+- Leverage `functools.partial()` for function specialization: `debug_log = partial(log, level='DEBUG')`
+- Use `functools.cache` for memoization: `@cache` decorator for pure functions
+- Prefer generator expressions over list comprehensions for large datasets: `sum(x**2 for x in range(1000000))`
+- Use `yield from` for generator delegation: `yield from other_generator()`
+
+#### Data Model and Collections
+- Implement `__slots__` for memory efficiency in data classes: `__slots__ = ('x', 'y', 'z')`
+- Use `collections.defaultdict` instead of manual key checking: `defaultdict(list)`
+- Leverage `itertools` for efficient iteration: `itertools.chain()`, `itertools.groupby()`
+- Use `operator` module for functional operations: `operator.attrgetter('name')` instead of lambdas
+- Prefer `frozenset()` for immutable collections when hashability needed
+
+#### Modern Syntax Features
+- Use `match` for complex conditionals instead of if/elif chains:
+- Use `match` with data structures for destructuring:
+- Leverage f-string improvements: `f"{value=}"` for debugging, `f"{value:.2%}"` for formatting  
+- Use positional-only parameters: `def func(pos_only, /, pos_or_kw, *, kw_only):`
+- Apply union type syntax: `str | int | None` instead of `Union[str, int, None]`
+- Use generic type syntax: `list[str]` instead of `List[str]`
+
+#### Control Flow and Context Management
+- Implement custom context managers with `contextlib.contextmanager`: `@contextmanager`
+- Use `contextlib.suppress()` for ignoring specific exceptions: `with suppress(FileNotFoundError):`
+- Leverage `itertools.takewhile()` and `itertools.dropwhile()` for conditional iteration
+- Use generator functions for lazy evaluation: `def fibonacci(): ...` with `yield`
+- Prefer `pathlib.Path` over string manipulation for file operations
+
+### Database Strategy
+
+- Use SQLite for data persistence if possible. Use postgresql in production.
+- Use separate SQLite files for different environments: dev, staging, main.
+- Use in-memory SQLite (`sqlite:///:memory:`) for testing. Use `conftest.py` for test database setup
+- Always output SQL in logs to help with debugging. Avoid ORMs.
+- Name an entity `class Entity` and the associated database access code as `class EntityDB`
+
+
+### Test Organization and Quality
+
+#### Test Structure and Naming
+- Name test files `{feature}_test.py` and put them in the same folder as `{feature}.py`
+- Use descriptive test names that explain what is being tested
 - Prefer functions recognizable by `pytest` over test classes
+- Tests should be independent of each other - avoid shared state
+- Use `fixture` selectively to avoid copy-paste duplicated code in test
+- Keep test logic simple: avoid loops, complex conditionals in tests
+
+#### Test Implementation
 - Use plain `assert` statements for clarity
-- Use `print` in tests for additional runtime details
-- Use `pytest.approx` with two decimal points for float/decimal comparisons
+- Make sure the assert statements capture intent and contracts
+- Tests should be fast: avoid sleep, use mocks for external dependencies
+- Set the log level to DEBUG in tests to gather additional runtime details
 - Use `@pytest.mark.parametrize` to separate code from test data
 - Use `@pytest.mark.{category}` and `@pytest.mark.requirement({FeatureName})` for test categorization
-
-### Test-Driven Development
-
-Writing tests first clarifies requirements and ensures testable design. It prevents the common trap of writing code that's hard to test.
-
-- Generate test code before application code
-- Use detailed assert statements to capture intent and contracts
-- Whenever you make a simple change, run the minimum test sets leveraging `pytest. mark`.
-
-### Regression Testing
-
-Full regression testing ensures changes don't break existing functionality. Coverage metrics indicate test quality.
-
-- Single-module: `PYTHONPATH=$(pwd) uv run pytest -vv --cov=module_name --durations=4`
-- Multi-module: `PYTHONPATH=$(pwd) uv run pytest -vv --cov=src --durations=4`
-- Coverage requirement: Minimum 84%
-- Performance: Optimize tests that take too long to execute
-
-
-## Build and Deployment
+- Use `pytest.approx` with two decimal points for float/decimal comparisons
+- Use `pytest`'s `--durations=4` to identify and optimise away any unit tests that takes longer than 0.01s to complete.
