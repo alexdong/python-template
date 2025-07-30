@@ -17,6 +17,5 @@ Execute these steps in sequence:
 Important: 
 - If `make dev` or `make test` fail, fix the issues before committing
 - Write a clear commit message that describes what was changed and why
-- Follow the commit message format: "Brief description of changes 🤖 Generated with [Claude Code](https://claude.ai/code)"
 
 Arguments (optional): $ARGUMENTS can be used as the commit message if provided, otherwise analyze the changes to create an appropriate message.

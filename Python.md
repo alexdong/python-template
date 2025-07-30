@@ -11,7 +11,7 @@
 - **Logging**: `loguru`
 - **Testing**: `pytest`
 - **CLI Tools**: `click`, `typer`, `prompt-toolkit`, `rich` and `shellingham`
-- **Web**: `python-fasthtml` and `fh-plotly`
+- **Web**: `python-fasthtml`, `requests`, and `fh-plotly`
 - **Templates**: `jinja2`
 - **AI/LLM**: use anthropic by default using `pydantic-ai`
 - **Data & Analysis**: `numpy`, `plotly`
