@@ -11,10 +11,10 @@
 - **Logging**: `loguru`
 - **Testing**: `pytest`
 - **CLI Tools**: `click`, `typer`, `prompt-toolkit`, `rich` and `shellingham`
-- **Web**: `fasthtml`
+- **Web**: `python-fasthtml` and `fh-plotly`
 - **Templates**: `jinja2`
 - **AI/LLM**: use anthropic by default using `pydantic-ai`
-- **Data & Analysis**: `numpy`, `plotly`, `streamlit`
+- **Data & Analysis**: `numpy`, `plotly`
 - **Cross platform**: `platformdirs`
 - **Hosting**: `cloudflare tunnel`
 
