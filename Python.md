@@ -14,7 +14,7 @@
 - **Web**: `python-fasthtml`, `requests`, and `fh-plotly`
 - **Templates**: `jinja2`
 - **AI/LLM**: use anthropic by default using `pydantic-ai`
-- **Data & Analysis**: `numpy`, `plotly`
+- **Data & Analysis**: `numpy`, `pandas`, `plotly`, `kaleido`
 - **Cross platform**: `platformdirs`
 - **Hosting**: `cloudflare tunnel`
 
