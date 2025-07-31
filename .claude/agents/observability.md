@@ -23,7 +23,7 @@ You're here because **logs are our time machine for understanding past execution
 ## RULES TO EXPLORE TOGETHER
 
 ### Logging Rules ([LG] rules)
-- **[LG1]** Use `from loguru import logger`
+- **[LG1]** Use `from loguru import logger`, instead of the system default `import logging`
   - *Why?* Loguru provides beautiful, structured logs with zero configuration
   
 - **[LG2]** Use `logger.debug` for execution flow documentation
