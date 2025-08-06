@@ -64,6 +64,8 @@ Ensure that you keep the following content intact:
 - Avoid hyperbolic language, like "flagship", "game-changing", "ground-breaking", etc.
 - Avoid unsubstantiated claims, like "the best", "the most", "the only", "the first", etc.
 - Avoid condescending language, like "obviously", "clearly", "evidently", etc.
+- Avoid repeating the same point multiple times, unless it is necessary for emphasis.
+- Avoid filler words or phrases, like "basically", "think of it this way", "at the end of the day", etc.
 
 - Replace weak verbs with stronger alternatives ("gave insights" → "clystalised insights")
 - Eliminate redundant phrases ("not uncommon" → "common")
