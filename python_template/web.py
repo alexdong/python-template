@@ -1,3 +1,4 @@
+import uvicorn
 from fasthtml.common import (
     H1,
     Body,
@@ -5,14 +6,13 @@ from fasthtml.common import (
     FastHTML,
     Head,
     Html,
-    Link,
     Meta,
     P,
+    Script,
     Title,
 )
-import uvicorn
 
-app = FastHTML(hdrs=(Link(rel="stylesheet", href="https://cdn.tailwindcss.com"),))
+app = FastHTML()
 
 
 @app.get("/")  # type: ignore
@@ -22,6 +22,7 @@ def home():  # type: ignore  # noqa: ANN201
             Title("Hello World - FastHTML with Tailwind"),
             Meta(charset="utf-8"),
             Meta(name="viewport", content="width=device-width, initial-scale=1"),
+            Script(src="https://cdn.tailwindcss.com"),
         ),
         Body(
             Div(
