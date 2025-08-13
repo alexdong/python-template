@@ -52,6 +52,12 @@ cause confusion months later.
 - **[DS1]** Prefer `@dataclass`, `namedtuple`, `enum` instead of tuples, mixed typed lists or dicts
   - *Why?* Structured returns are self-documenting. `User(name="Alex", age=30)` beats `("Alex", 30)`
 
+### Parse, Don't Validate
+- **[DS2]** Instead of validating user input, parse it into a structured type
+  - *Why?* Parsing enforces structure and intent. By using a data structure that 
+    makes illegal states unrepresentable and pushing the burden of proof upward as far as possible, 
+    we avoid the risk of acting on part of the invalid inputs later. 
+
 
 ### Modern Type Syntax
 - **[MS4]** Union syntax: `str | int | None`
