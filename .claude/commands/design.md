@@ -100,16 +100,4 @@ ULTRATHINK through each of these questions and provide detailed answers:
 - What are the key integration points?
 - How will we test the system?
 
-## Output Format
-
-Provide a comprehensive design document that includes:
-
-1. **Executive Summary** - High-level overview and key decisions
-2. **Architecture Diagram** - Visual representation of major components
-3. **Data Structures** - Core entities and their relationships (for coding tasks)
-4. **API Design** - Key interfaces and function signatures (for coding tasks)
-5. **Implementation Plan** - Phased approach with milestones
-6. **Risk Assessment** - Potential issues and mitigation strategies
-7. **Success Metrics** - How we'll measure if the design is working
-
 Remember: Focus on clarity over cleverness, and validate assumptions with evidence whenever possible.
